@@ -4,14 +4,15 @@ import java.io.*;
 
 public class Automovel {
 
+    //private
     private String placa;
     private String modelo;
     private String marca;
     private int ano;
-    private double capacidade;
-    private double odometro;
+    private String capacidade;
+    private String odometro;
 
-    public Automovel(String placa, String modelo, String marca, int ano, double capacidade, double odometro) {
+    public Automovel(String placa, String modelo, String marca, int ano, String capacidade, String odometro) {
         this.placa = placa;
         this.modelo = modelo;
         this.marca = marca;
@@ -56,19 +57,19 @@ public class Automovel {
         this.ano = ano;
     }
 
-    public double getCapacidade() {
+    public String getCapacidade() {
         return capacidade;
     }
 
-    public void setCapacidade(double capacidade) {
+    public void setCapacidade(String capacidade) {
         this.capacidade = capacidade;
     }
 
-    public double getOdometro() {
+    public String getOdometro() {
         return odometro;
     }
 
-    public void setOdometro(double odometro) {
+    public void setOdometro(String odometro) {
         this.odometro = odometro;
     }
 
@@ -83,9 +84,10 @@ public class Automovel {
     }
 
     public void readTxt() throws IOException{
-        File f = new File("automoveis.txt");
+        File f = new File("automoveis.txt");;
         if(f.exists() && !f.isDirectory()) {
             BufferedReader br = new BufferedReader(new FileReader("automoveis.txt"));
         }
     }
+
 }

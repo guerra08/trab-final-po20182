@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
@@ -12,10 +12,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <Pane prefHeight="600.0" prefWidth="266.0" AnchorPane.leftAnchor="0.0">
+      <Pane prefHeight="600.0" prefWidth="266.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label layoutX="27.0" layoutY="29.0" text="Cadastro de Automovel">
                <font>
@@ -38,23 +39,23 @@
               </rowConstraints>
                <children>
                   <Label text="Placa:" />
-                  <TextField fx:id="placa" GridPane.columnIndex="1" />
+                    <TextField fx:id="placa" GridPane.columnIndex="1" />
                   <Label text="Modelo:" GridPane.rowIndex="1" />
-                  <TextField fx:id="modelo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <TextField fx:id="modelo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Ano:" GridPane.rowIndex="2" />
+                   <TextField fx:id="ano" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label text="Fabricante:" GridPane.rowIndex="3" />
+                   <TextField fx:id="fabricante" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Label text="Capacidade:" GridPane.rowIndex="4" />
                   <TextField fx:id="capacidade" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label text="Odometro:" GridPane.rowIndex="5" />
                   <TextField fx:id="odometro" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <TextField fx:id="fabricante" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <TextField fx:id="ano" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <Button layoutX="102.0" layoutY="450.0" mnemonicParsing="false" onAction="#salvarAutomovel" text="Enviar" />
          </children>
       </Pane>
-      <Pane layoutX="527.0" prefHeight="600.0" prefWidth="273.0" AnchorPane.rightAnchor="0.0">
+      <Pane layoutX="527.0" prefHeight="600.0" prefWidth="273.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label layoutX="18.0" layoutY="30.0" text="Cadastro de Abastecimento">
                <font>
@@ -73,23 +74,24 @@
               </rowConstraints>
                <children>
                   <Label text="Automovel:" />
+                   <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" fx:id="listaAutomoveis"/>
                   <Label text="Combustvel:" GridPane.rowIndex="1" />
+                   <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Data:" GridPane.rowIndex="2" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <ComboBox prefWidth="150.0" GridPane.columnIndex="1" />
                </children>
             </GridPane>
          </children>
       </Pane>
-      <Pane layoutX="266.0" layoutY="-2.0" prefHeight="600.0" prefWidth="266.0" AnchorPane.leftAnchor="266.0" AnchorPane.rightAnchor="268.0">
+      <Pane layoutX="266.0" layoutY="-2.0" prefHeight="606.0" prefWidth="266.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="266.0" AnchorPane.rightAnchor="268.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label accessibleRole="PARENT" layoutX="31.0" layoutY="32.0" text="Relatorios / Operaçoes">
+            <Label accessibleRole="PARENT" layoutX="43.0" layoutY="32.0" text="Relatorios / Operaçoes">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextArea layoutX="33.0" layoutY="61.0" prefHeight="200.0" prefWidth="200.0" />
+            <TextArea layoutX="24.0" layoutY="59.0" prefHeight="327.0" prefWidth="218.0" />
+            <Text fx:id="returnMessage" fill="BLACK" layoutX="122.0" layoutY="442.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
          </children>
       </Pane>
    </children>
