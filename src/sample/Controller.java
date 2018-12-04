@@ -4,10 +4,7 @@ import com.sun.javaws.exceptions.InvalidArgumentException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -18,6 +15,7 @@ import java.util.HashMap;
 public class Controller {
 
     Automovel a;
+    HashMap<String, Automovel> carros;
 
     @FXML
     public ChoiceBox<String> listaAutomoveis;
@@ -35,7 +33,14 @@ public class Controller {
     private TextField ano;
     @FXML
     private TextField fabricante;
-
+    @FXML
+    private ChoiceBox<String> listaCombustiveis;
+    @FXML
+    private DatePicker dataAbas;
+    @FXML
+    private TextField qtdAbas;
+    @FXML
+    private TextField odomAbas;
 
     public Controller() {
         a = new Automovel();
@@ -44,10 +49,18 @@ public class Controller {
     @FXML
     private void initialize(){
         returnMessage.setText("");
+        populateCombustiveis();
+        populateCarros();
     }
 
     @FXML
-    private void salvarAutomovel(){
+    private void updateCarList(Automovel a){
+        carros.put(a.getPlaca(),a);
+        listaAutomoveis.getItems().add(a.getPlaca());
+    }
+
+    @FXML
+    private void saveCar(){
         if(placa.getText() == null || placa.getText().equals("")){
             returnMessage.setText("");
             returnMessage.setText("Valor da placa informado inválido! ");
@@ -67,12 +80,40 @@ public class Controller {
             capacidade.clear();
             odometro.clear();
             fabricante.clear();
-        }catch (Exception e){
+        }catch (Exception e) {
             System.out.println("Erro ao salvar carro no arquivo!");
         }
-        listaAutomoveis.getItems().add(a.getPlaca());
+        this.updateCarList(a);
         returnMessage.setText("");
         returnMessage.setText("Carro cadastrado com sucesso! ");
+    }
+
+    @FXML
+    private void saveAbastecimento(){
+
+        if(listaAutomoveis.getSelectionModel().getSelectedIndex() >= 0){
+
+        }
+
+    }
+
+    @FXML
+    private void populateCombustiveis(){
+        listaCombustiveis.getItems().add("Gasolina");
+        listaCombustiveis.getItems().add("Diesel");
+        listaCombustiveis.getItems().add("Álcool");
+    }
+
+    @FXML
+    private void populateCarros(){
+        try {
+            carros = a.readTxt();
+            carros.forEach((k,v)->{
+                listaAutomoveis.getItems().add(k);
+            });
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
 
 }

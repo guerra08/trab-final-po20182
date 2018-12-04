@@ -1,6 +1,7 @@
 package sample;
 
 import java.io.*;
+import java.util.HashMap;
 
 public class Automovel {
 
@@ -12,17 +13,31 @@ public class Automovel {
     private String capacidade;
     private String odometro;
 
-    public Automovel(String placa, String modelo, String marca, int ano, String capacidade, String odometro) {
+    private String foto;
+
+    public Automovel(String placa, String modelo, String marca, int ano, String capacidade, String odometro, String foto) {
         this.placa = placa;
         this.modelo = modelo;
         this.marca = marca;
         this.ano = ano;
         this.capacidade = capacidade;
         this.odometro = odometro;
+        this.foto = foto;
     }
 
-    public Automovel(){
+    public Automovel(String placa, String modelo, String marca, int ano, String capacidade, String odometro) { //Criando automovel sem foto
+        this(placa, modelo, marca, ano, capacidade, odometro, "");
 
+    }
+
+    public Automovel(){};
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public String getPlaca() {
@@ -83,10 +98,47 @@ public class Automovel {
         bw.close();
     }
 
-    public void readTxt() throws IOException{
-        File f = new File("automoveis.txt");;
+    public HashMap<String, Automovel> readTxt() throws IOException{
+        File f = new File("automoveis.txt");
         if(f.exists() && !f.isDirectory()) {
             BufferedReader br = new BufferedReader(new FileReader("automoveis.txt"));
+            String linha;
+            HashMap<String, Automovel> retorno = new HashMap<>();
+            while ((linha = br.readLine()) != null) {
+                String[] parts = linha.split("\\|");
+                if(parts.length == 6){ //Carro sem foto
+                    Automovel cur = new Automovel(parts[0],parts[1],parts[2],Integer.parseInt(parts[3]),parts[4], parts[5]);
+                    retorno.put(cur.getPlaca(),cur);
+                }else{
+                    Automovel cur = new Automovel(parts[0],parts[1],parts[2],Integer.parseInt(parts[3]),parts[4], parts[5],parts[6]);
+                    retorno.put(cur.getPlaca(),cur);
+                }
+            }
+            return retorno;
+        }else{
+            return null;
+        }
+    }
+
+    public Automovel searchForCar(String placa) throws IOException{
+        File f = new File("automoveis.txt");
+        if(f.exists() && !f.isDirectory()) {
+            BufferedReader br = new BufferedReader(new FileReader("automoveis.txt"));
+            String linha;
+            Automovel ret = new Automovel();
+            while ((linha = br.readLine()) != null) {
+                String[] parts = linha.split("\\|");
+                if(parts[0].equals(placa)) {
+                    if (parts.length == 6) { //Carro sem foto
+                        ret = new Automovel(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), parts[4], parts[5]);
+                    }else {
+                        ret = new Automovel(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), parts[4], parts[5], parts[6]);
+                    }
+                }
+            }
+            return ret;
+        }else{
+            return null;
         }
     }
 
