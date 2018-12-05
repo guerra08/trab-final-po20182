@@ -58,6 +58,7 @@ public class Controller {
     private void updateCarList(Automovel a){
         cars.put(a.getPlaca(),a);
         listaAutomoveis.getItems().add(a.getPlaca());
+        listaCarrosReport.getItems().add(a.getPlaca());
     }
 
     @FXML
@@ -72,7 +73,7 @@ public class Controller {
         a.setPlaca(placa.getText());
         a.setModelo(modelo.getText());
         a.setAno(Integer.parseInt(ano.getText()));
-        a.setCapacidade(capacidade.getText());
+        a.setCapacidade(Double.parseDouble(capacidade.getText()));
         a.setOdometro(Double.parseDouble(odometro.getText()));
         a.setMarca(fabricante.getText());
         Automovel inserted = cars.get(a.getPlaca());
@@ -142,15 +143,23 @@ public class Controller {
     }
 
     private void carReport(String placa){
-        txArea.setText("");
-        Automovel r = cars.get(placa);
-        txArea.setText(r.getPlaca() + " - " + r.getMarca() + " - " + r.getModelo() + " - " + r.getAno() + " - Capacidade: "+ r.getCapacidade() + " - Odometro: " + r.getOdometro() + "\n");
+        try {
+            HashMap<String, List<Abastecimento>> results = Abastecimento.getAllOfSpecific(placa);
+            System.out.println(Abastecimento.avgConsume(results.get(placa)));
+            txArea.setText("");
+            Automovel r = cars.get(placa);
+            txArea.setText(r.getPlaca() + " - " + r.getMarca() + " - " + r.getModelo() + " - " + r.getAno() + " - Capacidade: "+ r.getCapacidade() + " - Odometro: " + r.getOdometro() +
+                    "\n\nGastos neste mês: "+Abastecimento.costThisMonth(results.get(placa))+"\nGastos no mês anterior: "+Abastecimento.costMonthBefore(results.get(placa))+"\n");
+        }catch(Exception e){
+            errorMessagge("Nenhum abastecimento encontrado!");
+        }
     }
 
     private void fuelReport(String placa){
         txArea.setText("");
         try {
             HashMap<String, List<Abastecimento>> results = Abastecimento.getAllOfSpecific(placa);
+            System.out.println(Abastecimento.avgConsume(results.get(placa)));
             StringBuilder report = new StringBuilder();
             if(results != null){
                 report.append("Relatório de abastecimentos de "+placa+" : \n\n ----------------\n\n");
@@ -160,7 +169,7 @@ public class Controller {
         }catch (Exception e){
             /*returnMessage.setText("");
             returnMessage.setText(e.getMessage());*/
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -193,7 +202,7 @@ public class Controller {
             modelo.setText(c.getModelo());
             ano.setText(Integer.toString(c.getAno()));
             fabricante.setText(c.getMarca());
-            capacidade.setText(c.getCapacidade());
+            capacidade.setText(Double.toString(c.getCapacidade()));
             odometro.setText(Double.toString(c.getOdometro()));
         }
     }
@@ -209,5 +218,10 @@ public class Controller {
     private void saveSuccessMsg(){
         returnMessage.setText("");
         returnMessage.setText("Cadastro efetuado com sucesso!");
+    }
+
+    private void errorMessagge(String t){
+        returnMessage.setText("");
+        returnMessage.setText(t);
     }
 }
