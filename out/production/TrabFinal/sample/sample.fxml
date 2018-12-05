@@ -50,6 +50,7 @@
                   <TextField fx:id="capacidade" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label text="Odometro:" GridPane.rowIndex="5" />
                   <TextField fx:id="odometro" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" fx:id="hiddenCheck"/>
                </children>
             </GridPane>
             <Button layoutX="102.0" layoutY="413.0" mnemonicParsing="false" onAction="#saveCar" text="Salvar" />
@@ -87,7 +88,7 @@
                   <Label text="Odometro:" GridPane.rowIndex="4" />
                   <TextField fx:id="odomAbas" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label text="Valor P. Litro" GridPane.rowIndex="2" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="porLitro"/>
+                  <TextField fx:id="porLitro" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <Button layoutX="112.0" layoutY="366.0" mnemonicParsing="false" onAction="#saveAbastecimento" text="Cadastrar" />

@@ -3,6 +3,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,12 +43,16 @@ public class Controller {
     private ChoiceBox<String> listaCarrosReport;
     @FXML
     private ChoiceBox<String> reportSelection;
+    @FXML
+    private TextField hiddenCheck;
 
     public Controller() {
     }
 
     @FXML
     private void initialize(){
+        hiddenCheck.setVisible(false);
+        hiddenCheck.setText("false");
         returnMessage.setText("");
         populateCombustiveis();
         populateCarros();
@@ -65,19 +70,28 @@ public class Controller {
     private void saveCar(){
         Automovel a = new Automovel();
         String foto = "";
-        if(placa.getText() == null || placa.getText().equals("")){
-            returnMessage.setText("");
-            returnMessage.setText("Valor da placa informado inválido! ");
-            throw new IllegalArgumentException("Valor da placa informado inválido! ");
+        if(placa.getText() == null || placa.getText().equals("") || modelo.getText() == null || modelo.getText().equals("") || ano.getText() == null || ano.getText().equals("")
+            || capacidade.getText() == null || capacidade.getText().equals("") || odometro.getText() == null || odometro.getText().equals("") || fabricante.getText() == null || fabricante.getText().equals("")
+        ){
+            errorMessagge("Dados obrigatórios em branco! ");
+            return;
         }
+
+        Automovel check = cars.get(placa.getText());
+
+        if(check != null && hiddenCheck.getText().equals("false")){
+            errorMessagge("Automóvel já cadastrado! ");
+            return;
+        }
+
         a.setPlaca(placa.getText());
         a.setModelo(modelo.getText());
         a.setAno(Integer.parseInt(ano.getText()));
         a.setCapacidade(Double.parseDouble(capacidade.getText()));
         a.setOdometro(Double.parseDouble(odometro.getText()));
         a.setMarca(fabricante.getText());
-        Automovel inserted = cars.get(a.getPlaca());
-        if(inserted != null){
+
+        if(hiddenCheck.getText().equals("true")){
             System.out.println("null");
             try {
                 a.updateSelfOnTxt();
@@ -91,6 +105,7 @@ public class Controller {
                 System.out.println("Erro ao salvar carro no arquivo!");
             }
         }
+        hiddenCheck.setText("false");
         placa.clear();
         modelo.clear();
         ano.clear();
@@ -104,7 +119,8 @@ public class Controller {
     @FXML
     private void saveAbastecimento(){
         Automovel a = new Automovel();
-        if(listaAutomoveis.getSelectionModel().getSelectedIndex() >= 0 && listaCombustiveis.getSelectionModel().getSelectedIndex() >= 0){
+        if(listaAutomoveis.getSelectionModel().getSelectedIndex() >= 0 && listaCombustiveis.getSelectionModel().getSelectedIndex() >= 0 && !porLitro.getText().equals("")
+                && !qtdAbas.getText().equals("") && !odomAbas.getText().equals("") || dataAbas.getValue()!=null){
             try {
                 Automovel byPlaca = cars.get(listaAutomoveis.getSelectionModel().getSelectedItem());
                 if(byPlaca.getPlaca()!=null){
@@ -118,7 +134,8 @@ public class Controller {
             }
         }
         else{
-            throw new IllegalArgumentException("Dados obrigatórios em branco!");
+            errorMessagge("Dados obrigatórios em branco! ");
+            return;
         }
 
     }
@@ -173,6 +190,29 @@ public class Controller {
         }
     }
 
+    private void consumeReport(String placa){
+        txArea.setText("");
+        try {
+            HashMap<String, List<Abastecimento>> results = Abastecimento.getAllOfSpecific(placa);
+
+            DecimalFormat df = new DecimalFormat("#.00");
+
+            double avgVolume = Abastecimento.volumeAvg(results.get(placa));
+            double priceAvg = Abastecimento.priceAvg(results.get(placa));
+            double costAvg = Abastecimento.avgCost(results.get(placa));
+            double consumeAvg = Abastecimento.avgConsume(results.get(placa));
+
+            String avgV = df.format(avgVolume);
+            String pAvg = df.format(priceAvg);
+            String cAvg = df.format(costAvg);
+            String conAvg = df.format(consumeAvg);
+
+            txArea.setText("------- Relatório de consumo -------\n\nMédia de volume abastecido: "+avgV+"\n"+"Média de valor pago: "+pAvg+"\n"+"Custo médio por KM: "+cAvg+"\n"+"Rendimento médio (KM/L): "+conAvg);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     private void populateReports(){
         reportSelection.getItems().add("Infos. do carro");
         reportSelection.getItems().add("Abastecimentos");
@@ -189,6 +229,10 @@ public class Controller {
                     break;
                 case 1:
                     fuelReport(placa);
+                    break;
+                case 2:
+                    consumeReport(placa);
+                    break;
             }
         }
     }
@@ -210,6 +254,7 @@ public class Controller {
     @FXML
     private void updateCar(){
         if(listaCarrosReport.getSelectionModel().getSelectedIndex() >= 0 ){
+            hiddenCheck.setText("true");
             String p = listaCarrosReport.getSelectionModel().getSelectedItem();
             updateCarFields(p);
         }
