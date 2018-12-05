@@ -1,21 +1,24 @@
 package sample;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Automovel {
 
-    //private
     private String placa;
     private String modelo;
     private String marca;
     private int ano;
     private String capacidade;
-    private String odometro;
-
+    private double odometro;
     private String foto;
 
-    public Automovel(String placa, String modelo, String marca, int ano, String capacidade, String odometro, String foto) {
+    public Automovel(String placa, String modelo, String marca, int ano, String capacidade, double odometro, String foto) {
         this.placa = placa;
         this.modelo = modelo;
         this.marca = marca;
@@ -25,7 +28,7 @@ public class Automovel {
         this.foto = foto;
     }
 
-    public Automovel(String placa, String modelo, String marca, int ano, String capacidade, String odometro) { //Criando automovel sem foto
+    public Automovel(String placa, String modelo, String marca, int ano, String capacidade, double odometro) { //Criando automovel sem foto
         this(placa, modelo, marca, ano, capacidade, odometro, "");
 
     }
@@ -80,16 +83,20 @@ public class Automovel {
         this.capacidade = capacidade;
     }
 
-    public String getOdometro() {
+    public double getOdometro() {
         return odometro;
     }
 
-    public void setOdometro(String odometro) {
+    public void setOdometro(double odometro) {
         this.odometro = odometro;
     }
 
     public String toString(){
         return getPlaca() + "|" + getModelo()+"|"+getMarca()+"|"+getAno()+"|"+getCapacidade()+"|"+getOdometro()+"\n";
+    }
+
+    public String toStringOnUpdate(){
+        return getPlaca() + "|" + getModelo()+"|"+getMarca()+"|"+getAno()+"|"+getCapacidade()+"|"+getOdometro();
     }
 
     public void saveToTxt() throws IOException {
@@ -107,20 +114,21 @@ public class Automovel {
             while ((linha = br.readLine()) != null) {
                 String[] parts = linha.split("\\|");
                 if(parts.length == 6){ //Carro sem foto
-                    Automovel cur = new Automovel(parts[0],parts[1],parts[2],Integer.parseInt(parts[3]),parts[4], parts[5]);
+                    Automovel cur = new Automovel(parts[0],parts[1],parts[2],Integer.parseInt(parts[3]),parts[4], Double.parseDouble(parts[5]));
                     retorno.put(cur.getPlaca(),cur);
                 }else{
-                    Automovel cur = new Automovel(parts[0],parts[1],parts[2],Integer.parseInt(parts[3]),parts[4], parts[5],parts[6]);
+                    Automovel cur = new Automovel(parts[0],parts[1],parts[2],Integer.parseInt(parts[3]),parts[4], Double.parseDouble(parts[5]),parts[6]);
                     retorno.put(cur.getPlaca(),cur);
                 }
             }
+            br.close();
             return retorno;
         }else{
             return null;
         }
     }
 
-    public Automovel searchForCar(String placa) throws IOException{
+    public static Automovel searchForCarOnTxt(String placa) throws IOException{
         File f = new File("automoveis.txt");
         if(f.exists() && !f.isDirectory()) {
             BufferedReader br = new BufferedReader(new FileReader("automoveis.txt"));
@@ -130,16 +138,31 @@ public class Automovel {
                 String[] parts = linha.split("\\|");
                 if(parts[0].equals(placa)) {
                     if (parts.length == 6) { //Carro sem foto
-                        ret = new Automovel(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), parts[4], parts[5]);
+                        ret = new Automovel(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), parts[4], Double.parseDouble(parts[5]));
                     }else {
-                        ret = new Automovel(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), parts[4], parts[5], parts[6]);
+                        ret = new Automovel(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), parts[4], Double.parseDouble(parts[5]), parts[6]);
                     }
                 }
             }
+            br.close();
             return ret;
         }else{
-            return null;
+            throw new FileNotFoundException("Arquivo de dados não encontrado");
         }
+    }
+
+    public void updateSelfOnTxt() throws IOException {
+
+        List<String> fileContent = new ArrayList<>(Files.readAllLines(Paths.get("automoveis.txt"), StandardCharsets.UTF_8));
+
+        for (int i = 0; i < fileContent.size(); i++) {
+            String[] parts = fileContent.get(i).split("\\|");
+            if(parts[0].equals(this.getPlaca())){
+                fileContent.set(i, this.toStringOnUpdate());
+            }
+        }
+
+        Files.write(Paths.get("automoveis.txt"), fileContent, StandardCharsets.UTF_8);
     }
 
 }

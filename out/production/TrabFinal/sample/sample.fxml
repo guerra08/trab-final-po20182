@@ -23,7 +23,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <GridPane layoutX="22.0" layoutY="97.0" prefHeight="366.0" prefWidth="232.0">
+            <GridPane layoutX="22.0" layoutY="97.0" prefHeight="320.0" prefWidth="232.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.0" minWidth="10.0" prefWidth="77.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="10.0" prefWidth="123.0" />
@@ -52,7 +52,7 @@
                   <TextField fx:id="odometro" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                </children>
             </GridPane>
-            <Button layoutX="102.0" layoutY="435.0" mnemonicParsing="false" onAction="#saveCar" text="Salvar" />
+            <Button layoutX="102.0" layoutY="413.0" mnemonicParsing="false" onAction="#saveCar" text="Salvar" />
          </children>
       </Pane>
       <Pane layoutX="527.0" prefHeight="600.0" prefWidth="273.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="527.0" AnchorPane.topAnchor="0.0">
@@ -62,7 +62,7 @@
                   <Font size="17.0" />
                </font>
             </Label>
-            <GridPane layoutX="36.0" layoutY="97.0" prefHeight="227.0" prefWidth="200.0">
+            <GridPane layoutX="36.0" layoutY="97.0" prefHeight="252.0" prefWidth="200.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -73,21 +73,24 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Automovel:" />
                    <ChoiceBox fx:id="listaAutomoveis" prefWidth="150.0" GridPane.columnIndex="1" />
                   <Label text="Combustvel:" GridPane.rowIndex="1" />
-                  <Label text="Data:" GridPane.rowIndex="4" />
-                  <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="4" fx:id="dataAbas"/>
-                  <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="listaCombustiveis" />
-                  <Label text="Quantiade:" GridPane.rowIndex="2" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="qtdAbas"/>
-                  <Label text="Odometro:" GridPane.rowIndex="3" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="odomAbas"/>
+                  <Label text="Data:" GridPane.rowIndex="5" />
+                  <DatePicker fx:id="dataAbas" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <ChoiceBox fx:id="listaCombustiveis" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Quantiade:" GridPane.rowIndex="3" />
+                  <TextField fx:id="qtdAbas" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label text="Odometro:" GridPane.rowIndex="4" />
+                  <TextField fx:id="odomAbas" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label text="Valor P. Litro" GridPane.rowIndex="2" />
+                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="porLitro"/>
                </children>
             </GridPane>
-            <Button layoutX="111.0" layoutY="355.0" mnemonicParsing="false" text="Cadastrar" onAction="#saveAbastecimento"/>
+            <Button layoutX="112.0" layoutY="366.0" mnemonicParsing="false" onAction="#saveAbastecimento" text="Cadastrar" />
          </children>
       </Pane>
       <Pane layoutX="266.0" layoutY="-2.0" prefHeight="606.0" prefWidth="266.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -97,9 +100,9 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextArea layoutX="24.0" layoutY="59.0" prefHeight="327.0" prefWidth="218.0" />
-            <Text fx:id="returnMessage" fill="BLACK" layoutX="122.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-            <GridPane layoutX="33.0" layoutY="445.0">
+            <TextArea fx:id="txArea" layoutX="6.0" layoutY="113.0" prefHeight="330.0" prefWidth="256.0" />
+            <Text fx:id="returnMessage" fill="BLACK" layoutX="122.0" layoutY="468.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <GridPane layoutX="19.0" layoutY="488.0" prefHeight="90.0" prefWidth="232.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -107,10 +110,15 @@
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" text="Relatório" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
-                  <ChoiceBox prefWidth="150.0" />
+                  <Button mnemonicParsing="false" onAction="#showReport" text="Relatório" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <ChoiceBox fx:id="listaCarrosReport" prefWidth="150.0" GridPane.columnIndex="1" />
+                  <ChoiceBox fx:id="reportSelection" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Selecionar carro:" />
+                  <Label text="Selecionar relatório:" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#updateCar" text="Atualizar Carro" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </children>
