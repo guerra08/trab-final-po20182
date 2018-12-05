@@ -83,13 +83,17 @@ public class Controller {
             errorMessagge("Automóvel já cadastrado! ");
             return;
         }
-
-        a.setPlaca(placa.getText());
-        a.setModelo(modelo.getText());
-        a.setAno(Integer.parseInt(ano.getText()));
-        a.setCapacidade(Double.parseDouble(capacidade.getText()));
-        a.setOdometro(Double.parseDouble(odometro.getText()));
-        a.setMarca(fabricante.getText());
+        try {
+            a.setPlaca(placa.getText());
+            a.setModelo(modelo.getText());
+            a.setAno(Integer.parseInt(ano.getText()));
+            a.setCapacidade(Double.parseDouble(capacidade.getText()));
+            a.setOdometro(Double.parseDouble(odometro.getText()));
+            a.setMarca(fabricante.getText());
+        }catch (Exception e){
+            errorMessagge("Dado(os) no formato inválido! ");
+            return;
+        }
 
         if(hiddenCheck.getText().equals("true")){
             System.out.println("null");
@@ -126,16 +130,17 @@ public class Controller {
                 if(byPlaca.getPlaca()!=null){
                     Abastecimento ab = new Abastecimento(byPlaca, Double.parseDouble(odomAbas.getText()), Double.parseDouble(qtdAbas.getText()), listaCombustiveis.getSelectionModel().getSelectedIndex(),Double.parseDouble(porLitro.getText()),dataAbas.getValue());
                     ab.saveToTxt();
-
                     saveSuccessMsg();
                 }
-            }catch (Exception e ){
-
+            }catch (Exception e){
+                if(e instanceof IllegalArgumentException){
+                    errorMessagge( e.getMessage());
+                }
+                errorMessagge("Dado(os) no formato inválido! ");
             }
         }
         else{
             errorMessagge("Dados obrigatórios em branco! ");
-            return;
         }
 
     }
