@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -50,10 +51,12 @@
                   <TextField fx:id="capacidade" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label text="Odometro:" GridPane.rowIndex="5" />
                   <TextField fx:id="odometro" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" fx:id="hiddenCheck"/>
                </children>
             </GridPane>
-            <Button layoutX="102.0" layoutY="413.0" mnemonicParsing="false" onAction="#saveCar" text="Salvar" />
+            <Button layoutX="180.0" layoutY="417.0" mnemonicParsing="false" onAction="#saveCar" text="Salvar" />
+            <TextField fx:id="hiddenCheck" layoutX="131.0" layoutY="56.0" />
+            <Button fx:id="addImage" layoutX="25.0" layoutY="419.0" mnemonicParsing="false" text="Imagem" onAction="#addImage"/>
+            <ImageView fitHeight="134.0" fitWidth="170.0" layoutX="47.0" layoutY="459.0" pickOnBounds="true" preserveRatio="true" fx:id="carImage"/>
          </children>
       </Pane>
       <Pane layoutX="527.0" prefHeight="600.0" prefWidth="273.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="527.0" AnchorPane.topAnchor="0.0">

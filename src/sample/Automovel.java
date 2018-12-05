@@ -16,32 +16,18 @@ public class Automovel {
     private int ano;
     private double capacidade;
     private double odometro;
-    private String foto;
 
-    public Automovel(String placa, String modelo, String marca, int ano, double capacidade, double odometro, String foto) {
+    public Automovel(String placa, String modelo, String marca, int ano, double capacidade, double odometro) {
         this.placa = placa;
         this.modelo = modelo;
         this.marca = marca;
         this.ano = ano;
         this.capacidade = capacidade;
         this.odometro = odometro;
-        this.foto = foto;
-    }
-
-    public Automovel(String placa, String modelo, String marca, int ano, double capacidade, double odometro) { //Criando automovel sem foto
-        this(placa, modelo, marca, ano, capacidade, odometro, "");
-
     }
 
     public Automovel(){};
 
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
-    }
 
     public String getPlaca() {
         return placa;
@@ -113,13 +99,8 @@ public class Automovel {
             HashMap<String, Automovel> retorno = new HashMap<>();
             while ((linha = br.readLine()) != null) {
                 String[] parts = linha.split("\\|");
-                if(parts.length == 6){ //Carro sem foto
-                    Automovel cur = new Automovel(parts[0],parts[1],parts[2],Integer.parseInt(parts[3]),Double.parseDouble(parts[4]), Double.parseDouble(parts[5]));
-                    retorno.put(cur.getPlaca(),cur);
-                }else{
-                    Automovel cur = new Automovel(parts[0],parts[1],parts[2],Integer.parseInt(parts[3]),Double.parseDouble(parts[4]), Double.parseDouble(parts[5]),parts[6]);
-                    retorno.put(cur.getPlaca(),cur);
-                }
+                Automovel cur = new Automovel(parts[0],parts[1],parts[2],Integer.parseInt(parts[3]),Double.parseDouble(parts[4]), Double.parseDouble(parts[5]));
+                retorno.put(cur.getPlaca(),cur);
             }
             br.close();
             return retorno;
@@ -137,11 +118,7 @@ public class Automovel {
             while ((linha = br.readLine()) != null) {
                 String[] parts = linha.split("\\|");
                 if(parts[0].equals(placa)) {
-                    if (parts.length == 6) { //Carro sem foto
-                        ret = new Automovel(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]),Double.parseDouble(parts[4]), Double.parseDouble(parts[5]));
-                    }else {
-                        ret = new Automovel(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]),Double.parseDouble(parts[4]), Double.parseDouble(parts[5]), parts[6]);
-                    }
+                    ret = new Automovel(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]),Double.parseDouble(parts[4]), Double.parseDouble(parts[5]));
                 }
             }
             br.close();

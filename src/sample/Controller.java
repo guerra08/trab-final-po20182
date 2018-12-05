@@ -1,8 +1,15 @@
 package sample;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-
+import javafx.stage.FileChooser;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +52,8 @@ public class Controller {
     private ChoiceBox<String> reportSelection;
     @FXML
     private TextField hiddenCheck;
+    @FXML
+    private ImageView carImage;
 
     public Controller() {
     }
@@ -172,6 +181,8 @@ public class Controller {
             Automovel r = cars.get(placa);
             txArea.setText(r.getPlaca() + " - " + r.getMarca() + " - " + r.getModelo() + " - " + r.getAno() + " - Capacidade: "+ r.getCapacidade() + " - Odometro: " + r.getOdometro() +
                     "\n\nGastos neste mês: "+Abastecimento.costThisMonth(results.get(placa))+"\nGastos no mês anterior: "+Abastecimento.costMonthBefore(results.get(placa))+"\n");
+            File arq = new File(placa+".png");
+            showImage(placa,arq);
         }catch(Exception e){
             errorMessagge("Nenhum abastecimento encontrado!");
         }
@@ -188,6 +199,8 @@ public class Controller {
                 report.append(Abastecimento.orderAbastecimentosByMonth(results.get(placa)));
             }
             txArea.setText(report.toString());
+            File arq = new File(placa+".png");
+            showImage(placa,arq);
         }catch (Exception e){
             /*returnMessage.setText("");
             returnMessage.setText(e.getMessage());*/
@@ -213,6 +226,8 @@ public class Controller {
             String conAvg = df.format(consumeAvg);
 
             txArea.setText("------- Relatório de consumo -------\n\nMédia de volume abastecido: "+avgV+"\n"+"Média de valor pago: "+pAvg+"\n"+"Custo médio por KM: "+cAvg+"\n"+"Rendimento médio (KM/L): "+conAvg);
+            File arq = new File(placa+".png");
+            showImage(placa,arq);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -263,6 +278,37 @@ public class Controller {
             String p = listaCarrosReport.getSelectionModel().getSelectedItem();
             updateCarFields(p);
         }
+    }
+
+    @FXML
+    private void addImage(){
+        FileChooser fileChooser = new FileChooser();
+
+        File file = fileChooser.showOpenDialog(null);
+
+        try {
+            BufferedImage bufferedImage = ImageIO.read(file);
+            Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+            carImage.setImage(image);
+            File outputfile = new File(placa.getText() + ".png");
+            ImageIO.write(bufferedImage, "png", outputfile);
+        } catch (Exception ex) {
+
+        }
+    }
+
+    public void showImage(String m, File f){
+        if (f.exists() && !f.isDirectory()) {
+            BufferedImage originalImage = null;
+            try {
+                originalImage = ImageIO.read(new File(m + ".png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Image image = SwingFXUtils.toFXImage(originalImage, null);
+            carImage.setImage(image);
+            carImage.setVisible(true);
+        } else carImage.setVisible(false);
     }
 
     private void saveSuccessMsg(){
