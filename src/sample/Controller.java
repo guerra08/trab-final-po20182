@@ -1,4 +1,5 @@
 package sample;
+
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -56,6 +57,7 @@ public class Controller {
     private ImageView carImage;
 
     public Controller() {
+
     }
 
     @FXML
@@ -75,13 +77,17 @@ public class Controller {
         listaCarrosReport.getItems().add(a.getPlaca());
     }
 
+    private boolean checkFieldsIfEmpty(){
+        return(placa.getText() == null || placa.getText().equals("") || modelo.getText() == null || modelo.getText().equals("") || ano.getText() == null || ano.getText().equals("")
+                || capacidade.getText() == null || capacidade.getText().equals("") || odometro.getText() == null || odometro.getText().equals("") || fabricante.getText() == null || fabricante.getText().equals("")
+        );
+    }
+
     @FXML
     private void saveCar(){
         Automovel a = new Automovel();
         String foto = "";
-        if(placa.getText() == null || placa.getText().equals("") || modelo.getText() == null || modelo.getText().equals("") || ano.getText() == null || ano.getText().equals("")
-            || capacidade.getText() == null || capacidade.getText().equals("") || odometro.getText() == null || odometro.getText().equals("") || fabricante.getText() == null || fabricante.getText().equals("")
-        ){
+        if(checkFieldsIfEmpty()){
             errorMessagge("Dados obrigatórios em branco! ");
             return;
         }
@@ -92,6 +98,7 @@ public class Controller {
             errorMessagge("Automóvel já cadastrado! ");
             return;
         }
+
         try {
             a.setPlaca(placa.getText());
             a.setModelo(modelo.getText());
@@ -105,19 +112,25 @@ public class Controller {
         }
 
         if(hiddenCheck.getText().equals("true")){
-            System.out.println("null");
             try {
                 a.updateSelfOnTxt();
+                returnToActive();
             }catch (Exception e){
-                System.out.println(e);
+                errorMessagge("Erro ao atualizar carro!");
             }
         }else {
             try {
                 a.saveToTxt();
             } catch (Exception e) {
-                System.out.println("Erro ao salvar carro no arquivo!");
+                errorMessagge("Erro ao cadastrar carro!");
             }
         }
+        clearCarFields();
+        this.updateCarList(a);
+        saveSuccessMsg();
+    }
+
+    private void clearCarFields(){
         hiddenCheck.setText("false");
         placa.clear();
         modelo.clear();
@@ -125,8 +138,12 @@ public class Controller {
         capacidade.clear();
         odometro.clear();
         fabricante.clear();
-        this.updateCarList(a);
-        saveSuccessMsg();
+    }
+
+    private void clearAbastecimentoFields(){
+        porLitro.clear();
+        qtdAbas.clear();
+        odomAbas.clear();
     }
 
     @FXML
@@ -139,6 +156,7 @@ public class Controller {
                 if(byPlaca.getPlaca()!=null){
                     Abastecimento ab = new Abastecimento(byPlaca, Double.parseDouble(odomAbas.getText()), Double.parseDouble(qtdAbas.getText()), listaCombustiveis.getSelectionModel().getSelectedIndex(),Double.parseDouble(porLitro.getText()),dataAbas.getValue());
                     ab.saveToTxt();
+                    clearAbastecimentoFields();
                     saveSuccessMsg();
                 }
             }catch (Exception e){
@@ -169,18 +187,17 @@ public class Controller {
                 listaAutomoveis.getItems().add(k);
             });
         }catch(Exception e){
-            System.out.println(e);
+            errorMessagge("Nenhum veículo cadastrado.");
         }
     }
 
     private void carReport(String placa){
         try {
             HashMap<String, List<Abastecimento>> results = Abastecimento.getAllOfSpecific(placa);
-            System.out.println(Abastecimento.avgConsume(results.get(placa)));
             txArea.setText("");
             Automovel r = cars.get(placa);
             txArea.setText(r.getPlaca() + " - " + r.getMarca() + " - " + r.getModelo() + " - " + r.getAno() + " - Capacidade: "+ r.getCapacidade() + " - Odometro: " + r.getOdometro() +
-                    "\n\nGastos neste mês: "+Abastecimento.costThisMonth(results.get(placa))+"\nGastos no mês anterior: "+Abastecimento.costMonthBefore(results.get(placa))+"\n");
+                    "\n\nGastos neste mês: R$"+Abastecimento.costThisMonth(results.get(placa))+"\nGastos no mês anterior: R$"+Abastecimento.costMonthBefore(results.get(placa))+"\n");
             File arq = new File(placa+".png");
             showImage(placa,arq);
         }catch(Exception e){
@@ -192,7 +209,6 @@ public class Controller {
         txArea.setText("");
         try {
             HashMap<String, List<Abastecimento>> results = Abastecimento.getAllOfSpecific(placa);
-            System.out.println(Abastecimento.avgConsume(results.get(placa)));
             StringBuilder report = new StringBuilder();
             if(results != null){
                 report.append("Relatório de abastecimentos de "+placa+" : \n\n ----------------\n\n");
@@ -202,9 +218,7 @@ public class Controller {
             File arq = new File(placa+".png");
             showImage(placa,arq);
         }catch (Exception e){
-            /*returnMessage.setText("");
-            returnMessage.setText(e.getMessage());*/
-            System.out.println(e.getMessage());
+            errorMessagge(e.getMessage());
         }
     }
 
@@ -225,11 +239,11 @@ public class Controller {
             String cAvg = df.format(costAvg);
             String conAvg = df.format(consumeAvg);
 
-            txArea.setText("------- Relatório de consumo -------\n\nMédia de volume abastecido: "+avgV+"\n"+"Média de valor pago: "+pAvg+"\n"+"Custo médio por KM: "+cAvg+"\n"+"Rendimento médio (KM/L): "+conAvg);
+            txArea.setText("------- Relatório de consumo -------\n\nMédia de volume abastecido: "+avgV+" litros\n"+"Média de valor pago: R$"+pAvg+"\n"+"Custo médio por KM: R$"+cAvg+"\n"+"Rendimento médio (KM/L): "+conAvg);
             File arq = new File(placa+".png");
             showImage(placa,arq);
         }catch (Exception e){
-            System.out.println(e.getMessage());
+
         }
     }
 
@@ -282,10 +296,9 @@ public class Controller {
 
     @FXML
     private void addImage(){
+        if(checkFieldsIfEmpty()) {return;}
         FileChooser fileChooser = new FileChooser();
-
         File file = fileChooser.showOpenDialog(null);
-
         try {
             BufferedImage bufferedImage = ImageIO.read(file);
             Image image = SwingFXUtils.toFXImage(bufferedImage, null);
@@ -297,15 +310,15 @@ public class Controller {
         }
     }
 
-    public void showImage(String m, File f){
+    private void showImage(String m, File f){
         if (f.exists() && !f.isDirectory()) {
-            BufferedImage originalImage = null;
+            BufferedImage toShow = null;
             try {
-                originalImage = ImageIO.read(new File(m + ".png"));
+                toShow = ImageIO.read(new File(m + ".png"));
             } catch (IOException e) {
-                e.printStackTrace();
+                errorMessagge("Erro ao abrir a foto do carro.");
             }
-            Image image = SwingFXUtils.toFXImage(originalImage, null);
+            Image image = SwingFXUtils.toFXImage(toShow, null);
             carImage.setImage(image);
             carImage.setVisible(true);
         } else carImage.setVisible(false);
@@ -319,5 +332,27 @@ public class Controller {
     private void errorMessagge(String t){
         returnMessage.setText("");
         returnMessage.setText(t);
+    }
+
+    @FXML
+    private void clearSaveUp(){
+        String p = placa.getText();
+
+        clearCarFields();
+        placa.setDisable(false);
+        odometro.setDisable(false);
+
+        if(!placa.equals("")){
+            File arq = new File(placa+".png");
+            if(arq.exists() && !arq.isDirectory()){
+                arq.delete();
+            }
+        }
+
+    }
+
+    private void returnToActive(){
+        placa.setDisable(false);
+        odometro.setDisable(false);
     }
 }

@@ -3,9 +3,7 @@ package sample;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Abastecimento {
 
@@ -30,13 +28,12 @@ public class Abastecimento {
             throw new IllegalArgumentException("Quantidade de combustível maior do que a capacidade do veículo");
         }
         if(odometro < 0){
-            throw new IllegalArgumentException("Valor do odometro menor do que o atual");
+            throw new IllegalArgumentException("Valor do odômetro inválido");
         }
         this.quantidade = quantidade;
         this.combType = combType;
         this.odometroAnterior = automovel.getOdometro();
         double novoOdometro = (automovel.getOdometro() + odometro);
-        System.out.println(novoOdometro);
         this.odometroAtual = novoOdometro;
         this.distanciaDelta = novoOdometro - getOdometroAnterior();
 
@@ -45,7 +42,7 @@ public class Abastecimento {
         try{
             automovel.updateSelfOnTxt(); //Atualiza o valor do odometro do veículo no arquivo automoveis.txt
         }catch (Exception e){
-            System.out.println(e);
+
         }
 
         setPorLitro(porLitro);
@@ -192,18 +189,18 @@ public class Abastecimento {
 
     public static String orderAbastecimentosByMonth(List<Abastecimento> lista){ //Ordenar uma lista de abastecimentos de um determinado veículo por mês
 
-        StringBuilder jan = new StringBuilder(); jan.append("Janeiro: \n\n");
-        StringBuilder fev = new StringBuilder(); fev.append("Fevereiro: \n\n");
-        StringBuilder mar = new StringBuilder(); mar.append("Março: \n\n");
-        StringBuilder abr = new StringBuilder(); abr.append("Abril: \n\n");
-        StringBuilder mai = new StringBuilder(); mai.append("Maio: \n\n");
-        StringBuilder jun = new StringBuilder(); jun.append("Junho: \n\n");
-        StringBuilder jul = new StringBuilder(); jul.append("Julho: \n\n");
-        StringBuilder ago = new StringBuilder(); ago.append("Agosto: \n\n");
-        StringBuilder set = new StringBuilder(); set.append("Setempo: \n\n");
-        StringBuilder out = new StringBuilder(); out.append("Outubro: \n\n");
-        StringBuilder nov = new StringBuilder(); nov.append("Novembro: \n\n");
-        StringBuilder dez = new StringBuilder(); dez.append("Dezembro: \n\n");
+        StringBuilder jan = new StringBuilder(); jan.append("Janeiro: \n");
+        StringBuilder fev = new StringBuilder(); fev.append("Fevereiro: \n");
+        StringBuilder mar = new StringBuilder(); mar.append("Março: \n");
+        StringBuilder abr = new StringBuilder(); abr.append("Abril: \n");
+        StringBuilder mai = new StringBuilder(); mai.append("Maio: \n");
+        StringBuilder jun = new StringBuilder(); jun.append("Junho: \n");
+        StringBuilder jul = new StringBuilder(); jul.append("Julho: \n");
+        StringBuilder ago = new StringBuilder(); ago.append("Agosto: \n");
+        StringBuilder set = new StringBuilder(); set.append("Setembro: \n");
+        StringBuilder out = new StringBuilder(); out.append("Outubro: \n");
+        StringBuilder nov = new StringBuilder(); nov.append("Novembro: \n");
+        StringBuilder dez = new StringBuilder(); dez.append("Dezembro: \n");
 
         lista.forEach(e->{
             switch(e.getData().getMonthValue()){
@@ -290,5 +287,39 @@ public class Abastecimento {
         sum = l.stream().filter(e -> e.getData().getMonthValue() == LocalDateTime.now().getMonthValue()-1 && e.getData().getYear() == LocalDateTime.now().getYear()).mapToDouble(e-> e.getTotal()).sum();
         return sum;
     }
+
+    public static OptionalDouble[] costPerLiterByMoth(List<Abastecimento> lista){
+
+        OptionalDouble jan = lista.stream().filter(e->e.getData().getMonthValue() == 1).mapToDouble(e->e.getPorLitro()).average();
+        OptionalDouble fev = lista.stream().filter(e->e.getData().getMonthValue() == 2).mapToDouble(e->e.getPorLitro()).average();
+        OptionalDouble mar = lista.stream().filter(e->e.getData().getMonthValue() == 3).mapToDouble(e->e.getPorLitro()).average();
+        OptionalDouble abr = lista.stream().filter(e->e.getData().getMonthValue() == 4).mapToDouble(e->e.getPorLitro()).average();
+        OptionalDouble mai = lista.stream().filter(e->e.getData().getMonthValue() == 5).mapToDouble(e->e.getPorLitro()).average();
+        OptionalDouble jun = lista.stream().filter(e->e.getData().getMonthValue() == 6).mapToDouble(e->e.getPorLitro()).average();
+        OptionalDouble jul = lista.stream().filter(e->e.getData().getMonthValue() == 7).mapToDouble(e->e.getPorLitro()).average();
+        OptionalDouble ago = lista.stream().filter(e->e.getData().getMonthValue() == 8).mapToDouble(e->e.getPorLitro()).average();
+        OptionalDouble set = lista.stream().filter(e->e.getData().getMonthValue() == 9).mapToDouble(e->e.getPorLitro()).average();
+        OptionalDouble out = lista.stream().filter(e->e.getData().getMonthValue() == 10).mapToDouble(e->e.getPorLitro()).average();
+        OptionalDouble nov = lista.stream().filter(e->e.getData().getMonthValue() == 11).mapToDouble(e->e.getPorLitro()).average();
+        OptionalDouble dez = lista.stream().filter(e->e.getData().getMonthValue() == 12).mapToDouble(e->e.getPorLitro()).average();
+
+        OptionalDouble[] retorno = new OptionalDouble[12];
+
+        retorno[0] = jan;
+        retorno[1] = fev;
+        retorno[2] = mar;
+        retorno[3] = abr;
+        retorno[4] = mai;
+        retorno[5] = jun;
+        retorno[6] = jul;
+        retorno[7] = ago;
+        retorno[8] = set;
+        retorno[9] = out;
+        retorno[10] = nov;
+        retorno[11] = dez;
+
+        return retorno;
+    }
+
 
 }

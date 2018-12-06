@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="601.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <Pane prefHeight="600.0" prefWidth="266.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="268.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -53,23 +53,24 @@
                   <TextField fx:id="odometro" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                </children>
             </GridPane>
-            <Button layoutX="180.0" layoutY="417.0" mnemonicParsing="false" onAction="#saveCar" text="Salvar" />
+            <Button layoutX="225.0" layoutY="419.0" mnemonicParsing="false" onAction="#saveCar" text="Salvar" />
             <TextField fx:id="hiddenCheck" layoutX="131.0" layoutY="56.0" />
-            <Button fx:id="addImage" layoutX="25.0" layoutY="419.0" mnemonicParsing="false" text="Imagem" onAction="#addImage"/>
-            <ImageView fitHeight="134.0" fitWidth="170.0" layoutX="47.0" layoutY="459.0" pickOnBounds="true" preserveRatio="true" fx:id="carImage"/>
+            <Button fx:id="addImage" layoutX="25.0" layoutY="419.0" mnemonicParsing="false" onAction="#addImage" text="Imagem" />
+            <ImageView fx:id="carImage" fitHeight="134.0" fitWidth="170.0" layoutX="47.0" layoutY="459.0" pickOnBounds="true" preserveRatio="true" />
+            <Button layoutX="124.0" layoutY="420.0" mnemonicParsing="false" text="Limpar"  onAction="#clearSaveUp"/>
          </children>
       </Pane>
-      <Pane layoutX="527.0" prefHeight="600.0" prefWidth="273.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="527.0" AnchorPane.topAnchor="0.0">
+      <Pane layoutX="750.0" prefHeight="720.0" prefWidth="324.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="750.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label layoutX="33.0" layoutY="36.0" text="Cadastro de Abastecimento">
                <font>
                   <Font size="17.0" />
                </font>
             </Label>
-            <GridPane layoutX="36.0" layoutY="97.0" prefHeight="252.0" prefWidth="200.0">
+            <GridPane layoutX="36.0" layoutY="97.0" prefHeight="252.0" prefWidth="280.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.0" minWidth="10.0" prefWidth="171.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.0" minWidth="10.0" prefWidth="29.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -82,13 +83,13 @@
                <children>
                   <Label text="Automovel:" />
                    <ChoiceBox fx:id="listaAutomoveis" prefWidth="150.0" GridPane.columnIndex="1" />
-                  <Label text="Combustvel:" GridPane.rowIndex="1" />
+                  <Label text="Combustível:" GridPane.rowIndex="1" />
+                   <ChoiceBox fx:id="listaCombustiveis" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Data:" GridPane.rowIndex="5" />
                   <DatePicker fx:id="dataAbas" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <ChoiceBox fx:id="listaCombustiveis" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="Quantiade:" GridPane.rowIndex="3" />
+                  <Label text="Quantidade:" GridPane.rowIndex="3" />
                   <TextField fx:id="qtdAbas" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Label text="Odometro:" GridPane.rowIndex="4" />
+                  <Label text="Aumento no Odometro:" GridPane.rowIndex="4" />
                   <TextField fx:id="odomAbas" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label text="Valor P. Litro" GridPane.rowIndex="2" />
                   <TextField fx:id="porLitro" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -97,16 +98,16 @@
             <Button layoutX="112.0" layoutY="366.0" mnemonicParsing="false" onAction="#saveAbastecimento" text="Cadastrar" />
          </children>
       </Pane>
-      <Pane layoutX="266.0" layoutY="-2.0" prefHeight="606.0" prefWidth="266.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane layoutX="328.0" prefHeight="720.0" prefWidth="410.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label accessibleRole="PARENT" layoutX="43.0" layoutY="32.0" text="Relatorios / Operaçoes">
+            <Label accessibleRole="PARENT" layoutX="103.0" layoutY="35.0" text="Relatorios / Operaçoes">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextArea fx:id="txArea" layoutX="6.0" layoutY="113.0" prefHeight="330.0" prefWidth="256.0" />
-            <Text fx:id="returnMessage" fill="BLACK" layoutX="122.0" layoutY="468.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-            <GridPane layoutX="19.0" layoutY="488.0" prefHeight="90.0" prefWidth="232.0">
+            <TextArea fx:id="txArea" layoutX="16.0" layoutY="80.0" prefHeight="369.0" prefWidth="377.0" />
+            <Text fx:id="returnMessage" fill="BLACK" layoutX="191.0" layoutY="474.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <GridPane layoutX="88.0" layoutY="488.0" prefHeight="90.0" prefWidth="232.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -117,12 +118,12 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" onAction="#showReport" text="Relatório" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                  <ChoiceBox fx:id="listaCarrosReport" prefWidth="150.0" GridPane.columnIndex="1" />
-                  <ChoiceBox fx:id="reportSelection" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Selecionar carro:" />
+                   <ChoiceBox fx:id="listaCarrosReport" prefWidth="150.0" GridPane.columnIndex="1" />
                   <Label text="Selecionar relatório:" GridPane.rowIndex="1" />
+                   <ChoiceBox fx:id="reportSelection" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Button mnemonicParsing="false" onAction="#updateCar" text="Atualizar Carro" GridPane.rowIndex="2" />
+                   <Button mnemonicParsing="false" onAction="#showReport" text="Relatório" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </children>

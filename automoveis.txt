@@ -1,3 +1,3 @@
-ifl-2040|Ranger|Ford|2016|70.0|1500.0
-joj-5040|Ka|Ford|2015|30.0|400.0
-pio-9324|Pajero|Mit|2018|80.0|0.0
+iji-1337|HB20|Hyundai|2017|45.0|730.0
+jnb-4590|CR-V|Honda|2018|75.0|0.0
+tuv-1520|Ranger|Ford|2011|50.0|500.0
