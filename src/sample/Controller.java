@@ -199,7 +199,7 @@ public class Controller {
             txArea.setText(r.getPlaca() + " - " + r.getMarca() + " - " + r.getModelo() + " - " + r.getAno() + " - Capacidade: "+ r.getCapacidade() + " - Odometro: " + r.getOdometro() +
                     "\n\nGastos neste mês: R$"+Abastecimento.costThisMonth(results.get(placa))+"\nGastos no mês anterior: R$"+Abastecimento.costMonthBefore(results.get(placa))+"\n");
             File arq = new File(placa+".png");
-            showImage(placa,arq);
+            showCarImage(placa);
         }catch(Exception e){
             errorMessagge("Nenhum abastecimento encontrado!");
         }
@@ -216,7 +216,7 @@ public class Controller {
             }
             txArea.setText(report.toString());
             File arq = new File(placa+".png");
-            showImage(placa,arq);
+            showCarImage(placa);
         }catch (Exception e){
             errorMessagge(e.getMessage());
         }
@@ -240,8 +240,7 @@ public class Controller {
             String conAvg = df.format(consumeAvg);
 
             txArea.setText("------- Relatório de consumo -------\n\nMédia de volume abastecido: "+avgV+" litros\n"+"Média de valor pago: R$"+pAvg+"\n"+"Custo médio por KM: R$"+cAvg+"\n"+"Rendimento médio (KM/L): "+conAvg);
-            File arq = new File(placa+".png");
-            showImage(placa,arq);
+            showCarImage(placa);
         }catch (Exception e){
 
         }
@@ -295,26 +294,27 @@ public class Controller {
     }
 
     @FXML
-    private void addImage(){
+    private void addCarImage(){
         if(checkFieldsIfEmpty()) {return;}
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
         try {
             BufferedImage bufferedImage = ImageIO.read(file);
-            Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-            carImage.setImage(image);
-            File outputfile = new File(placa.getText() + ".png");
-            ImageIO.write(bufferedImage, "png", outputfile);
+            Image i = SwingFXUtils.toFXImage(bufferedImage, null);
+            carImage.setImage(i);
+            File toSave = new File(placa.getText() + ".png");
+            ImageIO.write(bufferedImage, "png", toSave);
         } catch (Exception ex) {
 
         }
     }
 
-    private void showImage(String m, File f){
-        if (f.exists() && !f.isDirectory()) {
+    private void showCarImage(String placa){
+        File arq = new File(placa+".png");
+        if (arq.exists()) {
             BufferedImage toShow = null;
             try {
-                toShow = ImageIO.read(new File(m + ".png"));
+                toShow = ImageIO.read(new File(placa + ".png"));
             } catch (IOException e) {
                 errorMessagge("Erro ao abrir a foto do carro.");
             }
