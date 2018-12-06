@@ -311,7 +311,7 @@ public class Controller {
 
     private void showCarImage(String placa){
         File arq = new File(placa+".png");
-        if (arq.exists()) {
+        if (arq.exists() && !arq.isDirectory()) {
             BufferedImage toShow = null;
             try {
                 toShow = ImageIO.read(new File(placa + ".png"));
